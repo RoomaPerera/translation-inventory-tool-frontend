@@ -1,4 +1,4 @@
-const login = () => {
+const Login = () => {
     return (
         <div className="login">
             <h2>login</h2>
@@ -6,4 +6,4 @@ const login = () => {
     )
 }
 
-export default login
+export default Login
