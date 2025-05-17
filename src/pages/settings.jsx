@@ -1,9 +1,8 @@
-// src/pages/settings.jsx
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Added Link import
+import { useNavigate, Link } from 'react-router-dom'; 
 import projectService from '../services/projectService';
 import languageService from '../services/languageService';
-import { useAuthContext } from '../hooks/useAuthContext'; // Assuming you have this hook
+import { useAuthContext } from '../hooks/useAuthContext'; 
 
 const Settings = () => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -75,7 +74,7 @@ const Settings = () => {
                 <button 
                   onClick={() => {
                     setShowAddForm(!showAddForm);
-                    setShowAddLanguageForm(false); // Close other form if open
+                    setShowAddLanguageForm(false); 
                   }}
                   className={`inline-flex items-center px-4 py-2 ${showAddForm 
                     ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' 
@@ -147,7 +146,7 @@ const Settings = () => {
                 <button 
                   onClick={() => {
                     setShowAddLanguageForm(!showAddLanguageForm);
-                    setShowAddForm(false); // Close other form if open
+                    setShowAddForm(false); 
                   }}
                   className={`inline-flex items-center px-4 py-2 ${showAddLanguageForm 
                     ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' 
@@ -196,7 +195,7 @@ const Settings = () => {
             </div>
           </div>
           
-          {/* NEW SECTION: Admin Controls Section (Only visible to Admin users) */}
+          {/* Admin Controls Section (Only visible to Admin users) */}
           {user && user.role === 'Admin' && (
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4">Admin Controls</h2>
@@ -469,10 +468,10 @@ const AddProjectForm = ({ onSuccess, availableLanguages = [] }) => {
     setError(null);
     
     try {
-      // For testing without auth, use a placeholder user ID
+      // For testing without auth, using a user ID
       const projectData = {
         ...formData,
-        createdBy: "648cf2a43120913ba3c1eff3" // Replace with a valid user ID from your DB
+        createdBy: "648cf2a43120913ba3c1eff3" 
       };
       
       console.log('Submitting project data:', projectData);

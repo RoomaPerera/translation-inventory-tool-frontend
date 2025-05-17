@@ -30,9 +30,9 @@ const Home = () => {
     fetchProjects();
   }, []);
 
-  // Sample translation data (replace with your API call)
+  // Sample translation data 
   useEffect(() => {
-    // Simulating translation data - replace with your actual API call
+    // Simulating translation data 
     const sampleTranslations = [
       { id: 1, key: 'ABOUT', language: 'EN', translation: 'About' },
       { id: 2, key: 'ABOUT', language: 'AR', translation: 'حول' },
@@ -43,7 +43,7 @@ const Home = () => {
   
   const handleProjectChange = (e) => {
     setSelectedProject(e.target.value);
-    // You would fetch translations for the selected project here
+    // would fetch translations for the selected project here
   };
 
   return (
@@ -89,8 +89,6 @@ const Home = () => {
         </div>
       </div>
       
-      {/* Rest of the Home component remains the same */}
-      {/* ... */}
     </div>
   );
 };

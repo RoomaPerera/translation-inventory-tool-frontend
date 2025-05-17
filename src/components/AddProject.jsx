@@ -1,4 +1,3 @@
-// src/components/AddProject.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import projectService from '../services/projectService';
@@ -50,10 +49,10 @@ const AddProject = () => {
     setError(null);
     
     try {
-      // For testing without auth, use a placeholder user ID
+      // For testing without auth, useing user ID
       const projectData = {
         ...formData,
-        createdBy: "662fd0f66b8b6c795ecfe25f" // Replace with a valid user ID from your DB
+        createdBy: "662fd0f66b8b6c795ecfe25f" 
       };
       
         console.log('Submitting project data:', projectData);

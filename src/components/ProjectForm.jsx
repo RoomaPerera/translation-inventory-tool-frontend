@@ -1,5 +1,3 @@
-// src/components/ProjectForm.jsx
-
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
