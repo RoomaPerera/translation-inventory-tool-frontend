@@ -1,26 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-
-//pages and components
-import Registration from './pages/registration'
-import Login from "./pages/login"
-import Navbar from "./components/navBar"
-import Settings from "./pages/settings"; 
+// src/App.jsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/home';
+import Settings from './pages/settings';
 
 function App() {
-
   return (
-    <div className="App">
-      <Router>
-        <div className="pages">
+    <Router>
+      <div className="App min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
           <Routes>
-            <Route path="/register" element={<Registration />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </div>
-      </Router>
-    </div>
-  )
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

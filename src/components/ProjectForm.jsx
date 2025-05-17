@@ -1,75 +1,174 @@
 // src/components/ProjectForm.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useAuthContext } from '../hooks/useAuthContext';
 
-const ProjectForm = ({ onClose }) => {
-  const { user } = useAuthContext();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [languages, setLanguages] = useState('');
-  const [message, setMessage] = useState('');
+import { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const ProjectForm = ({ onSubmit, initialData = {}, isEditing = false }) => {
+  const { user } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    name: initialData.name || '',
+    description: initialData.description || '',
+    languages: initialData.languages || [],
+    createdBy: initialData.createdBy || user?._id
+  });
+  
+  // For new language input
+  const [newLanguage, setNewLanguage] = useState('');
+  const [formErrors, setFormErrors] = useState({});
+  
+  // Update form when initialData or user changes
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        ...initialData,
+        createdBy: initialData.createdBy || user?._id
+      });
+    }
+  }, [initialData, user]);
 
-    const projectData = {
-      name,
-      description,
-      languages: languages.split(',').map(lang => lang.trim()),
-      createdBy: user?._id
-    };
-
-    try {
-      await axios.post('http://localhost:5000/api/projects', projectData);
-      setMessage('✅ Project added successfully!');
-      setTimeout(() => {
-        setMessage('');
-        onClose();
-      }, 1500);
-    } catch (error) {
-      console.error(error);
-      setMessage('❌ Error adding project');
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    
+    // Clear error when field is edited
+    if (formErrors[name]) {
+      setFormErrors({
+        ...formErrors,
+        [name]: null
+      });
     }
   };
 
+  // Add a language to the list
+  const addLanguage = () => {
+    if (!newLanguage.trim()) return;
+    
+    if (!formData.languages.includes(newLanguage.trim())) {
+      setFormData({
+        ...formData,
+        languages: [...formData.languages, newLanguage.trim()]
+      });
+    }
+    setNewLanguage('');
+  };
+
+  // Remove a language from the list
+  const removeLanguage = (index) => {
+    setFormData({
+      ...formData,
+      languages: formData.languages.filter((_, i) => i !== index)
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Basic validation
+    const errors = {};
+    if (!formData.name.trim()) {
+      errors.name = 'Project name is required';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    // Call the onSubmit prop with form data
+    onSubmit(formData);
+  };
+
   return (
-    <div className="fixed top-0 right-0 w-80 h-full bg-white shadow-lg z-50 p-6 border-l border-gray-200">
-      <button className="text-red-500 float-right" onClick={onClose}>✖</button>
-      <h2 className="text-xl font-bold mb-4">Add New Project</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Project Name
+        </label>
         <input
-          className="border p-2 rounded"
           type="text"
-          placeholder="Project Name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          required
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className={`mt-1 block w-full px-3 py-2 border ${
+            formErrors.name ? 'border-red-500' : 'border-gray-300'
+          } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
         />
+        {formErrors.name && (
+          <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+        )}
+      </div>
+
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
         <textarea
-          className="border p-2 rounded"
-          placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          type="text"
-          placeholder="Languages (comma-separated)"
-          value={languages}
-          onChange={e => setLanguages(e.target.value)}
-          required
-        />
+          id="description"
+          name="description"
+          rows="4"
+          value={formData.description}
+          onChange={handleChange}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        ></textarea>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Languages
+        </label>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {formData.languages.map((lang, index) => (
+            <div 
+              key={index} 
+              className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md flex items-center"
+            >
+              <span>{lang}</span>
+              <button
+                type="button"
+                onClick={() => removeLanguage(index)}
+                className="ml-1 text-indigo-500 hover:text-indigo-700"
+              >
+                &times;
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex">
+          <input
+            type="text"
+            value={newLanguage}
+            onChange={(e) => setNewLanguage(e.target.value)}
+            placeholder="Add a language (e.g., en, fr, es)"
+            className="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <button
+            type="button"
+            onClick={addLanguage}
+            className="bg-indigo-500 text-white px-4 py-2 rounded-r-md hover:bg-indigo-600"
+          >
+            Add
+          </button>
+        </div>
+        <p className="mt-1 text-sm text-gray-500">
+          Add languages that will be used in this project
+        </p>
+      </div>
+
+      <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Add Project
+          {isEditing ? 'Update Project' : 'Create Project'}
         </button>
-        {message && <p className="text-sm text-green-600">{message}</p>}
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
