@@ -75,7 +75,7 @@ const Settings = () => {
 
   // Delete project function
   const handleDeleteProject = async (projectId) => {
-    if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) { //confirmation alert
       try {
         await projectService.deleteProject(projectId);
         // Update projects list after deletion
@@ -144,7 +144,7 @@ const Settings = () => {
             <div className="space-y-4">
               <p className="text-gray-600">
                 Manage your translation projects from here. Add new projects, view existing ones, 
-                and keep track of all your translation work.
+                and keep track of all your projects.
               </p>
               
               <div className="flex flex-wrap gap-2 mb-6">
@@ -243,8 +243,7 @@ const Settings = () => {
             <h2 className="text-xl font-semibold mb-4">Language Management</h2>
             <div className="space-y-4">
               <p className="text-gray-600">
-                Manage languages available for translation in your projects. Add new languages
-                that can be assigned to projects and translators.
+                Add new languages that can be assigned to projects and translators.
               </p>
               
               <div className="flex flex-wrap gap-2">
@@ -289,45 +288,11 @@ const Settings = () => {
             </div>
           </div>
         )}
-        
-        {/* Admin Controls Section (Only visible to Admin users) */}
-        {user && user.role === 'Admin' && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Admin Controls</h2>
-            <div className="space-y-4">
-              <p className="text-gray-600">
-                Manage system users and assign languages to translators.
-              </p>
-              
-              <div className="flex flex-wrap gap-2">
-                <Link 
-                  to="/translator-management"
-                  className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                  </svg>
-                  Manage Translators
-                </Link>
-                
-                <Link 
-                  to="/pending-users"
-                  className="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  Approve Pending Users
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
       
-      {/* Modal Overlay - using a darker overlay with no blur effect */}
+      
       {(showAddForm || showAddLanguageForm || showEditForm) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-70">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-white bg-opacity-70">
           <div 
             ref={modalRef}
             className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-modal-appear"

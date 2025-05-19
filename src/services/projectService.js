@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'; // To make HTTP requests
 
 // API base URL 
 const API_URL = 'http://localhost:5000/api';
@@ -16,7 +16,7 @@ const apiClient = axios.create({
 // Add a request interceptor for debugging
 apiClient.interceptors.request.use(
   config => {
-    console.log('Making ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}');
+   console.log(`Making ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}`);
     if (config.data) {
       console.log('Request payload:', config.data);
     }
