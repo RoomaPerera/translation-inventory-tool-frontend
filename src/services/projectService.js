@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Set your API base URL 
+// API base URL 
 const API_URL = 'http://localhost:5000/api';
 
 // Create axios instance with base configuration
@@ -16,7 +16,7 @@ const apiClient = axios.create({
 // Add a request interceptor for debugging
 apiClient.interceptors.request.use(
   config => {
-    console.log(`Making ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}`);
+    console.log('Making ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}');
     if (config.data) {
       console.log('Request payload:', config.data);
     }
@@ -49,7 +49,7 @@ const projectService = {
   addProject: async (projectData) => {
     try {
       console.log('Adding project:', projectData);
-      const response = await apiClient.post('/projects', projectData);
+      const response = await apiClient.post('/projects', projectData); // Sends a POST request to /projects
       console.log('Project added successfully:', response.data);
       return response.data;
     } catch (error) {
@@ -124,11 +124,10 @@ const projectService = {
 function handleApiError(error) {
   if (error.response) {
     // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
     console.error('Response data:', error.response.data);
     console.error('Response status:', error.response.status);
     return error.response.data || { 
-      message: `Server error: ${error.response.status} ${error.response.statusText}` 
+      message: 'Server error: ${error.response.status} ${error.response.statusText}' 
     };
   } else if (error.request) {
     // The request was made but no response was received
