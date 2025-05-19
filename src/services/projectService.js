@@ -127,7 +127,7 @@ function handleApiError(error) {
     console.error('Response data:', error.response.data);
     console.error('Response status:', error.response.status);
     return error.response.data || { 
-      message: 'Server error: ${error.response.status} ${error.response.statusText}' 
+      message: 'Server error: ${error.response.status} ${error.response.statusText}'
     };
   } else if (error.request) {
     // The request was made but no response was received
